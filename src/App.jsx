@@ -11,6 +11,7 @@ import ProdectedRoute from "./Components/ProdectedRoute";
 import AuthProdectedRoute from "./Components/AuthProdectedRoute";
 import Following from "./Pages/Following";
 import Settings from "./Pages/Settings";
+import NotFoundPage from "./Pages/NotFoundPage";
 function App() {
   const Router = createBrowserRouter([
     {
@@ -22,6 +23,7 @@ function App() {
         {path: "Following", element:<ProdectedRoute><Following /></ProdectedRoute>},
         {path: "Settings", element:<ProdectedRoute><Settings /></ProdectedRoute>},
         {path: "single-post/:id", element:<ProdectedRoute><SinglePostPage /></ProdectedRoute>},
+         { path: "*",element: <NotFoundPage />,}
       ],
     },
     {
