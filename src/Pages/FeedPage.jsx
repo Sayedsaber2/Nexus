@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {
-  X,
-} from "lucide-react";
+import {X} from "lucide-react";
 // ونخلص الكريت واالابديت والدليت البوست والكومينت ونخص ال ui من الجنبين
 import {getLikesPosts, getPosts} from "@/Services/PostService";
 import LoadingScrean from "@/Components/LoadingScrean";
@@ -49,8 +47,8 @@ export default function FeedPage() {
   }
 
   function handlePostDeleted(postId) {
-  setPosts((prev) => prev.filter((p) => p._id !== postId));
-}
+    setPosts((prev) => prev.filter((p) => p._id !== postId));
+  }
   if (isLoading) {
     return (
       <div className="space-y-4 max-w-2xl mx-auto">
@@ -173,34 +171,32 @@ export default function FeedPage() {
         </div>
       )}
 
-  <div className="relative flex justify-center px-4">
+      <div className="relative flex justify-center px-4">
+        {/* Feed — centered */}
+        <div className="w-full max-w-2xl space-y-4">
+          {posts?.map((post) => {
+            const originalPost = post?.isShare ? post?.sharedPost : post;
+            return (
+              <PostCard
+                key={post._id}
+                post={post}
+                originalPost={originalPost}
+                openComments={openComments}
+                toggleComments={toggleComments}
+                handleShowLikes={handleShowLikes}
+                setSelectedImage={setSelectedImage}
+                isSinglePost={false}
+                onPostDeleted={handlePostDeleted}
+              />
+            );
+          })}
+        </div>
 
-  {/* Feed — centered */}
-  <div className="w-full max-w-2xl space-y-4">
-    {posts?.map((post) => {
-      const originalPost = post?.isShare ? post?.sharedPost : post;
-      return (
-        <PostCard
-          key={post._id}
-          post={post}
-          originalPost={originalPost}
-          openComments={openComments}
-          toggleComments={toggleComments}
-          handleShowLikes={handleShowLikes}
-          setSelectedImage={setSelectedImage}
-          isSinglePost={false}
-           onPostDeleted={handlePostDeleted}
-        />
-      );
-    })}
-  </div>
-
-  {/* Right Sidebar — fixed to far right */}
-  <div className="hidden xl:block fixed top-24 right-6 w-80">
-    <PeopleYouMayKnow />
-  </div>
-
-</div>
+        {/* Right Sidebar — fixed to far right */}
+        <div className="hidden xl:block fixed top-24 right-6 w-80">
+          <PeopleYouMayKnow />
+        </div>
+      </div>
     </>
   );
 }

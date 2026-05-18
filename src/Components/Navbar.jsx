@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import {NavLink, Link, useNavigate} from "react-router-dom";
 import {
   Zap,
@@ -15,14 +15,14 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/Components/ui/dropdown-menu";
 
 import ThemeToggle from "./ThemeToggle";
-import { AuthConText } from "@/Context/AuthConText";
+import {AuthConText} from "@/Context/AuthConText";
 
 export default function Navbar() {
-  const{setIsLogged_in, userData }=useContext(AuthConText)
-  
+  const {setIsLogged_in, userData} = useContext(AuthConText);
+
   const navigate = useNavigate();
   function LogOut() {
     // Implement your logout logic here
@@ -160,8 +160,9 @@ export default function Navbar() {
             transition
           "
           />
-          {userData?.notificationsCount>0&&<span
-            className="
+          {userData?.notificationsCount > 0 && (
+            <span
+              className="
     absolute -top-1 -right-1
     min-w-5 h-5 px-1
     rounded-full
@@ -172,9 +173,10 @@ export default function Navbar() {
     flex items-center justify-center
     border-2 border-background
   "
-          >
-            {userData?.notificationsCount}
-          </span>}
+            >
+              {userData?.notificationsCount}
+            </span>
+          )}
         </div>
 
         {/* MESSAGE */}
@@ -246,12 +248,10 @@ export default function Navbar() {
           "
           >
             <div className="px-3 py-2 border-b border-border mb-1">
-    <p className="text-sm font-semibold text-foreground">
-      {userData?.name}
-    </p>
-
-    
-  </div>
+              <p className="text-sm font-semibold text-foreground">
+                {userData?.name}
+              </p>
+            </div>
             <Link to="/Profile">
               <DropdownMenuItem
                 className="
@@ -274,9 +274,7 @@ export default function Navbar() {
                   transition
                 "
                 />
-
                 Profile
-                
               </DropdownMenuItem>
             </Link>
 

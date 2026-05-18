@@ -34,8 +34,7 @@ export default function Settings() {
       toast.success("password changed successfully");
       localStorage.setItem("token", response?.data?.token);
       setIsLogged_in(true);
-      reset()
-      
+      reset();
     }
     setIsLoading(false);
   }

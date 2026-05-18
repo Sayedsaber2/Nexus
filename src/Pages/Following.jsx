@@ -2,61 +2,62 @@ import PeopleYouMayKnow from "@/Components/FollowSuggestions";
 import LoadingScrean from "@/Components/LoadingScrean";
 import CreatePost from "@/Components/Post/CreatePost";
 import PostCard from "@/Components/Post/PostCard";
-import { getHomeFeed } from "@/Services/PostService";
-import { X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import {getHomeFeed} from "@/Services/PostService";
+import {X} from "lucide-react";
+import React, {useEffect, useState} from "react";
 
 export default function Following() {
-     const [selectedImage, setSelectedImage] = useState(null);
-      const [posts, setPosts] = useState([]);
-      const [isLoading, setIsLoading] = useState(true);
-      const [showLikes, setShowLikes] = useState(false);
-      const [likedUsers, setLikedUsers] = useState([]);
-      const [openComments, setOpenComments] = useState({});
-       async function getAllFollowing() {
-          try {
-            const response = await getHomeFeed();
-      
-            if (response?.success) {
-              setPosts(response?.data?.posts || []);
-            }
-          } catch (error) {
-            console.log(error);
-          } finally {
-            setIsLoading(false);
-          }
-        }
-        async function handleShowLikes(postId) {
-          const res = await getLikesPosts(postId);
-      
-          if (res?.data?.likes) {
-            setLikedUsers(res.data.likes);
-            setShowLikes(true);
-          }
-        }
-      
-        useEffect(() => {
-          getAllFollowing();
-        }, []);
-      
-        function toggleComments(postId) {
-          setOpenComments((prev) => ({
-            ...prev,
-            [postId]: !prev[postId],
-          }));
-        }
-      if (isLoading) {
-          return (
-            <div className="space-y-4 max-w-2xl mx-auto">
-              <LoadingScrean />
-              <LoadingScrean />
-              <LoadingScrean />
-            </div>
-          );
-        }
-  return <>
-  <CreatePost getAllPosts={getAllFollowing} />
-   {/* Likes Modal */}
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showLikes, setShowLikes] = useState(false);
+  const [likedUsers, setLikedUsers] = useState([]);
+  const [openComments, setOpenComments] = useState({});
+  async function getAllFollowing() {
+    try {
+      const response = await getHomeFeed();
+
+      if (response?.success) {
+        setPosts(response?.data?.posts || []);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  async function handleShowLikes(postId) {
+    const res = await getLikesPosts(postId);
+
+    if (res?.data?.likes) {
+      setLikedUsers(res.data.likes);
+      setShowLikes(true);
+    }
+  }
+
+  useEffect(() => {
+    getAllFollowing();
+  }, []);
+
+  function toggleComments(postId) {
+    setOpenComments((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  }
+  if (isLoading) {
+    return (
+      <div className="space-y-4 max-w-2xl mx-auto">
+        <LoadingScrean />
+        <LoadingScrean />
+        <LoadingScrean />
+      </div>
+    );
+  }
+  return (
+    <>
+      <CreatePost getAllPosts={getAllFollowing} />
+      {/* Likes Modal */}
       {showLikes && (
         <div
           className="
@@ -164,32 +165,32 @@ export default function Following() {
           />
         </div>
       )}
-<div className="relative flex justify-center px-4">
+      <div className="relative flex justify-center px-4">
+        {/* Feed — centered */}
+        <div className="w-full max-w-2xl space-y-4">
+          {posts?.map((post) => {
+            const originalPost = post?.isShare ? post?.sharedPost : post;
+            return (
+              <PostCard
+                key={post._id}
+                post={post}
+                originalPost={originalPost}
+                openComments={openComments}
+                toggleComments={toggleComments}
+                handleShowLikes={handleShowLikes}
+                setSelectedImage={setSelectedImage}
+                isSinglePost={false}
+                callBack={getAllFollowing}
+              />
+            );
+          })}
+        </div>
 
-  {/* Feed — centered */}
-  <div className="w-full max-w-2xl space-y-4">
-    {posts?.map((post) => {
-      const originalPost = post?.isShare ? post?.sharedPost : post;
-      return (
-        <PostCard
-          key={post._id}
-          post={post}
-          originalPost={originalPost}
-          openComments={openComments}
-          toggleComments={toggleComments}
-          handleShowLikes={handleShowLikes}
-          setSelectedImage={setSelectedImage}
-          isSinglePost={false}
-          callBack={getAllFollowing}
-        />
-      );
-    })}
-  </div>
-
-  {/* Right Sidebar — fixed to far right */}
-  <div className="hidden xl:block fixed top-24 right-6 w-80">
-    <PeopleYouMayKnow />
-  </div>
-
-</div>
-  </>}
+        {/* Right Sidebar — fixed to far right */}
+        <div className="hidden xl:block fixed top-24 right-6 w-80">
+          <PeopleYouMayKnow />
+        </div>
+      </div>
+    </>
+  );
+}

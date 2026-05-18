@@ -91,8 +91,8 @@ export default function ProfilePage() {
   }
 
   function handlePostDeleted(postId) {
-  setPosts((prev) => prev.filter((p) => p._id !== postId));
-}
+    setPosts((prev) => prev.filter((p) => p._id !== postId));
+  }
   if (!userData) {
     return <LoadingScrean />;
   }

@@ -2,7 +2,7 @@ import LoadingScrean from "@/Components/LoadingScrean";
 import PostCard from "@/Components/Post/PostCard";
 import {getPostComments} from "@/Services/CommentService";
 import {getLikesPosts, getSinglePost} from "@/Services/PostService";
-import { X } from "lucide-react";
+import {X} from "lucide-react";
 import React from "react";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
@@ -12,20 +12,19 @@ export default function SinglePostPage() {
 
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-    const [showLikes, setShowLikes] = useState(false);
+  const [showLikes, setShowLikes] = useState(false);
   const [likedUsers, setLikedUsers] = useState([]);
 
-  
   const [comments, setComments] = useState([]);
-  
+
   async function handleShowLikes(postId) {
-      const res = await getLikesPosts(postId);
-  
-      if (res?.data?.likes) {
-        setLikedUsers(res.data.likes);
-        setShowLikes(true);
-      }
+    const res = await getLikesPosts(postId);
+
+    if (res?.data?.likes) {
+      setLikedUsers(res.data.likes);
+      setShowLikes(true);
     }
+  }
   async function getPost() {
     const response = await getSinglePost(id);
 
@@ -35,8 +34,8 @@ export default function SinglePostPage() {
     const res = await getPostComments(id);
 
     if (res?.message === "success") {
-    setComments(res?.data?.comments);
-  }
+      setComments(res?.data?.comments);
+    }
     setLoading(false);
   }
 
@@ -50,8 +49,7 @@ export default function SinglePostPage() {
 
   return (
     <>
-    
-    {/* Likes Modal */}
+      {/* Likes Modal */}
       {showLikes && (
         <div
           className="
@@ -136,20 +134,18 @@ export default function SinglePostPage() {
           </div>
         </div>
       )}
-    <div className="w-[60%] mx-auto my-4 space-y-4">
-      <PostCard
-        post={post}
-        originalPost={originalPost}
-        comments={comments}
-        openComments={{}}
-        toggleComments={() => {}}
-        handleShowLikes={handleShowLikes}
-        setSelectedImage={() => {}}
-        isSinglePost={true}
-        
-      />
-      
-    </div>
+      <div className="w-[60%] mx-auto my-4 space-y-4">
+        <PostCard
+          post={post}
+          originalPost={originalPost}
+          comments={comments}
+          openComments={{}}
+          toggleComments={() => {}}
+          handleShowLikes={handleShowLikes}
+          setSelectedImage={() => {}}
+          isSinglePost={true}
+        />
+      </div>
     </>
   );
 }

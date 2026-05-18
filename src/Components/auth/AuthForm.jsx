@@ -11,7 +11,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/Components/ui/select";
 import {SendLogin, SendRegister} from "@/Services/register";
 import {Button, Spinner} from "@heroui/react";
 import toast from "react-hot-toast";
