@@ -193,7 +193,7 @@ export default function FeedPage() {
         </div>
 
         {/* Right Sidebar — fixed to far right */}
-        <div className="hidden xl:block fixed top-24 right-6 w-80">
+        <div className="hidden xl:block fixed top-18 right-6 w-80">
           <PeopleYouMayKnow />
         </div>
       </div>
