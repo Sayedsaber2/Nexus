@@ -14,7 +14,7 @@ export default function LeftSide() {
             {/* MAIN TEXT */}
             <div>
               <h1 className="text-5xl font-bold leading-[1.1]">
-                Connect with sdfsdfsdfsfsfsfdsfhytnytnynyntyntntynyn<br />
+                Connect with <br />
                 <span className="text-[#7C5CFC]">amazing people</span>
               </h1>
               <p className="text-gray-200 mt-3 text-md max-w-md leading-relaxed">
