@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import {useState} from "react";
 import {motion} from "framer-motion";
-import backGround from "../assets/auth.jpg";
+import backGround from "../assets/photo 1.png";
 import {useParams, useNavigate} from "react-router-dom";
 import LeftSide from "../Components/auth/LeftSide";
 import AuthHeader from "../Components/auth/AuthHeader";
