@@ -42,7 +42,7 @@ const { setUserData } = useContext(AuthConText)
   return (
     <aside className=" rounded-3xl border border-border bg-card shadow-xl">
       {/* Header */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-border bg-accent/30">
+      <div className="rounded-3xl flex items-center gap-3 px-5 py-4 border-b border-border bg-accent/30">
         <div className="flex items-center justify-center w-10 h-10 rounded-2xl bg-accent text-accent-foreground">
           <Sparkles size={18} />
         </div>
@@ -62,7 +62,7 @@ const { setUserData } = useContext(AuthConText)
           <Loader2 size={24} className="animate-spin text-primary" />
         </div>
       ) : users?.length > 0 ? (
-        <div className="p-4 space-y-2 max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide">
+        <div className="p-4 space-y-2 max-h-[calc(100vh-14rem)] overflow-y-auto scrollbar-hide">
           {users.map((user) => {
             const isFollowing = followingUsers.includes(user._id);
 

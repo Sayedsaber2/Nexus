@@ -35,7 +35,7 @@ export default function CreatePost({getAllPosts}) {
     setloading(false);
   }
   return (
-    <div className="max-w-2xl mx-auto my-4">
+    <div className="max-w-2xl mx-auto my-2">
       <form
         onSubmit={handelcreatePost}
         className="bg-card border border-border rounded-3xl p-4 space-y-3 shadow-lg"

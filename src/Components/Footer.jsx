@@ -2,7 +2,7 @@ import { Zap } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="mt-8 border-t border-border py-2.5 z-150">
+    <footer className="mt-8 border-t border-border py-3 z-150">
       
       <div className="max-w-5xl mx-auto px-4 flex items-center justify-center text-xs text-muted-foreground">
 

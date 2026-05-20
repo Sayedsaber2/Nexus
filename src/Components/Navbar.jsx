@@ -1,5 +1,5 @@
-import React, {useContext} from "react";
-import {NavLink, Link, useNavigate} from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
   Zap,
   Bell,
@@ -7,8 +7,9 @@ import {
   LogOutIcon,
   SettingsIcon,
   UserIcon,
+  ChevronDown,
 } from "lucide-react";
-
+ 
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,323 +17,314 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
-
+ 
 import ThemeToggle from "./ThemeToggle";
-import {AuthConText} from "@/Context/AuthConText";
-
+import { AuthConText } from "@/Context/AuthConText";
+ 
 export default function Navbar() {
-  const {setIsLogged_in, userData} = useContext(AuthConText);
-
+  const { setIsLogged_in, userData } = useContext(AuthConText);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+ 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+ 
   function LogOut() {
-    // Implement your logout logic here
     localStorage.removeItem("token");
     setIsLogged_in(false);
-    // navigate("/auth/login");
   }
+ 
   return (
     <div
-      className="
-      sticky top-0 z-50
-      w-full px-6 py-3
-      flex items-center justify-between
-      bg-background/70
-      backdrop-blur-xl
-      border-b border-border
-      text-foreground
-      transition-colors duration-300
-    "
+      className={`
+        sticky top-0 z-50
+        w-full px-4 pt-3 pb-2
+        flex justify-center
+        transition-all duration-300
+        ${scrolled ? "bg-background/80 backdrop-blur-xl" : "bg-transparent"}
+      `}
     >
-      {/* LEFT - LOGO */}
-      <Link to="/" className="flex items-center gap-3">
-        <div
-          className="
-          w-10 h-10 rounded-lg
-          flex items-center justify-center
-          bg-linear-to-br from-[#8B5CF6] to-[#FC5CA8]
-          shadow-[0_0_20px_rgba(139,92,246,0.35)]
-        "
-        >
-          <Zap className="text-white w-5 h-5" />
-        </div>
-
-        <h1
-          className="
-          text-2xl font-bold
-          bg-linear-to-br from-[#8B5CF6] to-[#FC5CA8]
-          bg-clip-text text-transparent
-        "
-          style={{fontFamily: "Orbitron, sans-serif"}}
-        >
-          NEXUS
-        </h1>
-      </Link>
-
-      {/* CENTER - NAV LINKS */}
-      <div className="inline-flex items-center gap-4 font-semibold">
-        <NavLink
-          to="/"
-          className={({isActive}) =>
-            `
-            inline-flex items-center justify-center
-            px-4 py-1.5 rounded-full
-            border text-sm
-            transition duration-300
-
-            ${
-              isActive
-                ? `
-                bg-primary
-                border-primary
-                text-primary-foreground
-                shadow-[0_0_16px_rgba(139,92,246,0.35)]
-              `
-                : `
-                bg-card
-                border-border
-                text-muted-foreground
-                hover:border-primary
-                hover:text-foreground
-              `
-            }
-          `
-          }
-        >
-          For you
-        </NavLink>
-
-        <NavLink
-          to="/Following"
-          className={({isActive}) =>
-            `
-            inline-flex items-center justify-center
-            px-4 py-1.5 rounded-full
-            border text-sm
-            transition duration-300
-
-            ${
-              isActive
-                ? `
-                bg-primary
-                border-primary
-                text-primary-foreground
-                shadow-[0_0_16px_rgba(139,92,246,0.35)]
-              `
-                : `
-                bg-card
-                border-border
-                text-muted-foreground
-                hover:border-primary
-                hover:text-foreground
-              `
-            }
-          `
-          }
-        >
-          Following
-        </NavLink>
-      </div>
-
-      {/* RIGHT */}
-      <div className="flex items-center gap-4">
-        <ThemeToggle />
-        {/* NOTIFICATION */}
-        <div
-          className="
-          relative
-          w-9 h-9 rounded-full
-          flex items-center justify-center
+      {/* ── Floating navbar ── */}
+      <nav
+        className={`
+          w-full max-w-5xl
+          flex items-center justify-between
+          px-3 py-2
+          rounded-2xl
+          bg-card/80
+          backdrop-blur-xl
           border border-border
-          bg-card
-          hover:border-primary
-          hover:shadow-[0_0_14px_rgba(139,92,246,0.25)]
-          transition duration-300
-          cursor-pointer
-          group
-        "
-        >
-          <Bell
+          transition-all duration-300
+          ${scrolled
+            ? "shadow-[0_4px_32px_rgba(124,92,252,0.10)]"
+            : "shadow-[0_2px_16px_rgba(124,92,252,0.06)]"
+          }
+        `}
+      >
+ 
+        {/* ── LEFT — Logo ── */}
+        <Link to="/" className="flex items-center gap-2.5 group shrink-0">
+          <div
             className="
-            
-            w-5 h-5
-            text-primary
-            group-hover:text-[#A78BFA]
-            transition
-          "
-          />
-          {userData?.notificationsCount > 0 && (
-            <span
-              className="
-    absolute -top-1 -right-1
-    min-w-5 h-5 px-1
-    rounded-full
-    bg-pink-500
-    text-white
-    text-[10px]
-    font-bold
-    flex items-center justify-center
-    border-2 border-background
-  "
-            >
-              {userData?.notificationsCount}
-            </span>
-          )}
-        </div>
-
-        {/* MESSAGE */}
-        <div
-          className="
-          relative
-          w-9 h-9 rounded-full
-          flex items-center justify-center
-          border border-border
-          bg-card
-          hover:border-primary
-          hover:shadow-[0_0_14px_rgba(139,92,246,0.25)]
-          transition duration-300
-          cursor-pointer
-          group
-        "
-        >
-          <MessageCircle
-            className="
-            w-5 h-5
-            text-primary
-            group-hover:text-[#A78BFA]
-            transition
-          "
-          />
-          <span
-            className="
-    absolute -top-1 -right-1
-    min-w-5 h-5 px-1
-    rounded-full
-    bg-pink-500
-    text-white
-    text-[10px]
-    font-bold
-    flex items-center justify-center
-    border-2 border-background
-  "
-          >
-            2
-          </span>
-        </div>
-
-        {/* PROFILE */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <img
-              src={userData?.photo}
-              alt="profile"
-              className="
-              w-9 h-9 rounded-full
-              object-cover
-              border border-border
-              hover:border-primary
-              transition duration-300
-              cursor-pointer
+              w-9 h-9 rounded-xl
+              flex items-center justify-center
+              shadow-[0_0_16px_rgba(124,92,252,0.35)]
+              group-hover:shadow-[0_0_22px_rgba(124,92,252,0.55)]
+              group-hover:scale-[1.06]
+              transition-all duration-300
             "
-            />
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent
-            align="end"
-            className="
-            w-52 p-2 rounded-2xl
-            bg-card/95
-            backdrop-blur-xl
+            style={{ background: "linear-gradient(135deg, var(--gradient-primary-from), var(--gradient-primary-to))" }}
+          >
+            <Zap className="text-white w-4.5 h-4.5" strokeWidth={2.5} />
+          </div>
+ 
+          <h1
+            className="text-[16px] font-bold tracking-widest"
+            style={{
+              fontFamily: "Orbitron, sans-serif",
+              background: "linear-gradient(to right, var(--gradient-primary-from), var(--gradient-primary-to))",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            NEXUS
+          </h1>
+        </Link>
+ 
+        {/* ── CENTER — Segmented nav ── */}
+        <div
+          className="
+            flex items-center gap-0.5 p-1
+            rounded-xl
+            bg-muted
             border border-border
-            text-card-foreground
-            shadow-2xl
           "
-          >
-            <div className="px-3 py-2 border-b border-border mb-1">
-              <p className="text-sm font-semibold text-foreground">
-                {userData?.name}
-              </p>
-            </div>
-            <Link to="/Profile">
-              <DropdownMenuItem
-                className="
-                group flex items-center gap-2
-                px-3 py-2 rounded-xl
-                cursor-pointer transition
-
-                text-muted-foreground
-                hover:bg-accent
-                hover:text-accent-foreground
-                focus:bg-accent
-                focus:text-accent-foreground
-              "
-              >
-                <UserIcon
-                  className="
-                  w-4 h-4
-                  stroke-muted-foreground
-                  group-hover:stroke-accent-foreground
-                  transition
-                "
-                />
-                Profile
-              </DropdownMenuItem>
-            </Link>
-
-            <Link to="/settings">
-              <DropdownMenuItem
-                className="
-                group flex items-center gap-2
-                px-3 py-2 rounded-xl
-                cursor-pointer transition
-
-                text-muted-foreground
-                hover:bg-accent
-                hover:text-accent-foreground
-                focus:bg-accent
-                focus:text-accent-foreground
-              "
-              >
-                <SettingsIcon
-                  className="
-                  w-4 h-4
-                  stroke-muted-foreground
-                  group-hover:stroke-accent-foreground
-                  transition
-                "
-                />
-                Settings
-              </DropdownMenuItem>
-            </Link>
-
-            <DropdownMenuSeparator className="bg-border my-1" />
-
-            <DropdownMenuItem
-              onClick={LogOut}
-              className="
-              group flex items-center gap-2
-              px-3 py-2 rounded-xl
-              cursor-pointer transition
-
-              text-red-400
-              hover:bg-red-500/10
-              hover:text-red-300
-              focus:bg-red-500/10
-              focus:text-red-300
-            "
+        >
+          {[
+            { to: "/", label: "For you", end: true },
+            { to: "/Following", label: "Following" },
+          ].map(({ to, label, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                `
+                  px-5 py-1.5
+                  rounded-[10px]
+                  text-sm font-medium
+                  transition-all duration-200
+                  ${
+                    isActive
+                      ? `
+                        bg-card
+                        text-foreground
+                        shadow-sm
+                        border border-border
+                      `
+                      : `
+                        text-muted-foreground
+                        hover:text-foreground
+                        hover:bg-card/60
+                      `
+                  }
+                `
+              }
             >
-              <LogOutIcon
+              {label}
+            </NavLink>
+          ))}
+        </div>
+ 
+        {/* ── RIGHT — Actions ── */}
+        <div className="flex items-center gap-2 shrink-0">
+          <ThemeToggle />
+ 
+          {/* Notification */}
+          <NavIconBtn
+            badge={userData?.notificationsCount}
+            icon={<Bell className="w-4.25 h-4.25 text-primary" />}
+          />
+ 
+          {/* Message */}
+          <NavIconBtn
+            badge={3}
+            icon={<MessageCircle className="w-4.25 h-4.25 text-primary" />}
+          />
+ 
+          {/* Divider */}
+          <span className="block w-px h-5 bg-border mx-0.5" />
+ 
+          {/* ── Profile dropdown ── */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
                 className="
-                w-4 h-4
-                stroke-red-400
-                group-hover:stroke-red-300
-                transition
+                  group
+                  flex items-center gap-2
+                  pl-1.5 pr-2.5 py-1.5
+                  rounded-xl
+                  border border-border
+                  bg-card
+                  hover:border-primary/50
+                  hover:bg-accent
+                  active:scale-[0.98]
+                  transition-all duration-200
+                  outline-none focus-visible:ring-2 focus-visible:ring-ring
+                "
+              >
+                <img
+                  src={userData?.photo}
+                  alt={userData?.name}
+                  className="
+                    w-6 h-6 rounded-lg
+                    object-cover
+                    ring-1 ring-border
+                  "
+                />
+                <span className="text-[13px] font-medium text-foreground max-w-20 truncate">
+                  {userData?.name?.split(" ")[0]}
+                </span>
+                <ChevronDown
+                  className="
+                    w-3.5 h-3.5 text-muted-foreground
+                    group-data-[state=open]:rotate-180
+                    transition-transform duration-200
+                  "
+                />
+              </button>
+            </DropdownMenuTrigger>
+ 
+            <DropdownMenuContent
+              align="end"
+              sideOffset={8}
+              className="
+                w-52 p-1.5
+                rounded-2xl
+                bg-popover
+                border border-border
+                shadow-xl shadow-black/8
               "
-              />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+            >
+              {/* User info header */}
+              <div className="px-3 py-2.5 mb-0.5">
+                <p className="text-[13px] font-semibold text-foreground leading-none">
+                  {userData?.name}
+                </p>
+                {userData?.email && (
+                  <p className="text-[11px] text-muted-foreground mt-1 truncate">
+                    {userData.email}
+                  </p>
+                )}
+              </div>
+ 
+              <DropdownMenuSeparator className="bg-border mb-0.5" />
+ 
+              <Link to="/Profile">
+                <DropdownMenuItem
+                  className="
+                    flex items-center gap-2.5
+                    px-3 py-2 rounded-xl
+                    text-[13px] text-muted-foreground
+                    cursor-pointer
+                    hover:bg-accent hover:text-accent-foreground
+                    focus:bg-accent focus:text-accent-foreground
+                    transition-colors
+                  "
+                >
+                  <UserIcon className="w-3.75 h-3.75 shrink-0" />
+                  Profile
+                </DropdownMenuItem>
+              </Link>
+ 
+              <Link to="/settings">
+                <DropdownMenuItem
+                  className="
+                    flex items-center gap-2.5
+                    px-3 py-2 rounded-xl
+                    text-[13px] text-muted-foreground
+                    cursor-pointer
+                    hover:bg-accent hover:text-accent-foreground
+                    focus:bg-accent focus:text-accent-foreground
+                    transition-colors
+                  "
+                >
+                  <SettingsIcon className="w-3.75 h-3.75 shrink-0" />
+                  Settings
+                </DropdownMenuItem>
+              </Link>
+ 
+              <DropdownMenuSeparator className="bg-border mt-0.5 mb-0.5" />
+ 
+              <DropdownMenuItem
+                onClick={LogOut}
+                className="
+                  flex items-center gap-2.5
+                  px-3 py-2 rounded-xl
+                  text-[13px] text-destructive
+                  cursor-pointer
+                  hover:bg-destructive/10 hover:text-destructive
+                  focus:bg-destructive/10 focus:text-destructive
+                  transition-colors
+                "
+              >
+                <LogOutIcon className="w-3.75 h-3.75 shrink-0" />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </nav>
     </div>
+  );
+}
+ 
+/* ── Icon button with optional badge ── */
+function NavIconBtn({ icon, badge }) {
+  const count = Number(badge) || 0;
+ 
+  return (
+    <button
+      className="
+        relative
+        w-9 h-9 rounded-xl
+        flex items-center justify-center
+        bg-card
+        border border-border
+        hover:border-primary/50
+        hover:bg-accent
+        hover:scale-[1.06]
+        active:scale-95
+        transition-all duration-200
+        cursor-pointer
+        group
+        outline-none focus-visible:ring-2 focus-visible:ring-ring
+      "
+    >
+      <span className="group-hover:text-primary transition-colors duration-200">
+        {icon}
+      </span>
+ 
+      {count > 0 && (
+        <span
+          className="
+            absolute -top-2 -right-3
+            min-w-5 h-5 px-1
+            rounded-full
+            text-white text-[10px] font-bold
+            flex items-center justify-center
+            border-2 border-background
+            leading-none
+          "
+          style={{ background: "linear-gradient(to right, var(--gradient-primary-from), var(--gradient-primary-to))" }}
+        >
+          {count > 9 ? "9+" : count}
+        </span>
+      )}
+    </button>
   );
 }
