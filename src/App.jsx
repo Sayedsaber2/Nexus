@@ -12,6 +12,7 @@ import AuthProdectedRoute from "./Components/AuthProdectedRoute";
 import Following from "./Pages/Following";
 import Settings from "./Pages/Settings";
 import NotFoundPage from "./Pages/NotFoundPage";
+import Notifications from "./Pages/Notifications";
 function App() {
   const Router = createBrowserRouter([
     {
@@ -22,6 +23,7 @@ function App() {
         {path: "profile", element:<ProdectedRoute><ProfilePage /></ProdectedRoute>},
         {path: "Following", element:<ProdectedRoute><Following /></ProdectedRoute>},
         {path: "Settings", element:<ProdectedRoute><Settings /></ProdectedRoute>},
+        {path: "notifications", element:<ProdectedRoute><Notifications /></ProdectedRoute>},
         {path: "single-post/:id", element:<ProdectedRoute><SinglePostPage /></ProdectedRoute>},
          { path: "*",element: <NotFoundPage />,}
       ],

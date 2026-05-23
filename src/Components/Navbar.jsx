@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { getUnreadCount } from "@/Services/NotificationService";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import {
   Zap,
@@ -22,11 +23,14 @@ import ThemeToggle from "./ThemeToggle";
 import { AuthConText } from "@/Context/AuthConText";
  
 export default function Navbar() {
-  const { setIsLogged_in, userData } = useContext(AuthConText);
+  
+  const { setIsLogged_in, userData, unreadCount } = useContext(AuthConText);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
+ 
  
   useEffect(() => {
+      
+
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -145,10 +149,12 @@ export default function Navbar() {
           <ThemeToggle />
  
           {/* Notification */}
-          <NavIconBtn
-            badge={userData?.notificationsCount}
-            icon={<Bell className="w-4.25 h-4.25 text-primary" />}
-          />
+          <Link to="/notifications">
+            <NavIconBtn
+              badge={unreadCount}
+              icon={<Bell className="w-4.25 h-4.25 text-primary" />}
+            />
+          </Link>
  
           {/* Message */}
           <NavIconBtn

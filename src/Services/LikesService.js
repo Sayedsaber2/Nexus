@@ -50,3 +50,20 @@ export async function SharePost(postId, body) {
     console.log(err);
   }
 }
+
+export async function LikeUnlikeComment(postId, commentId) {
+  try {
+    const { data } = await axios.put(
+      `https://route-posts.routemisr.com/posts/${postId}/comments/${commentId}/like`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return data;
+  } catch (err) {
+    return err.response?.data;
+  }
+}
