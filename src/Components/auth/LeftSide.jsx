@@ -82,7 +82,7 @@ export default function LeftSide() {
             </div>
 
             {/* STATS */}
-            <div className="flex gap-8">
+            <div className="flex flex-wrap gap-4 sm:gap-8">
               {/* USERS */}
               <div className="flex items-center gap-2 group cursor-pointer">
                 <div className="p-2 rounded-lg bg-[#7C5CFC]/10 group-hover:bg-[#7C5CFC]/20 transition">
